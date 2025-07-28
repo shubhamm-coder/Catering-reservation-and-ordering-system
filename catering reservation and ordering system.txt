@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catering Reservation & Ordering</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input, select, button {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      cursor: pointer;
+      border: none;
+      font-size: 1.1em;
+    }
+    button:hover {
+      background: #218838;
+    }
+    .order-list label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 0;
+    }
+    .total {
+      margin-top: 15px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>Catering Reservation & Ordering</header>
+  <div class="container">
+    <!-- Reservation Section -->
+    <h2>Reserve Your Event</h2>
+    <form id="reservationForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="date" id="date" required>
+      <input type="number" id="guests" placeholder="Number of Guests" min="1" required>
+      <select id="eventType" required>
+        <option value="">Select Event Type</option>
+        <option>Birthday Party</option>
+        <option>Wedding</option>
+        <option>Corporate Event</option>
+        <option>Private Dinner</option>
+      </select>
+
+      <!-- Ordering Section -->
+      <h2 style="margin-top:20px;">Order Food Packages</h2>
+      <div id="orderForm" class="order-list">
+        <label>Veg Meal (₹200) <input type="number" min="0" value="0" data-price="200"></label>
+        <label>Non-Veg Meal (₹300) <input type="number" min="0" value="0" data-price="300"></label>
+        <label>Snacks (₹100) <input type="number" min="0" value="0" data-price="100"></label>
+        <label>Desserts (₹150) <input type="number" min="0" value="0" data-price="150"></label>
+        <label>Drinks (₹50) <input type="number" min="0" value="0" data-price="50"></label>
+      </div>
+
+      <div class="total">Total: ₹0</div>
+
+      <!-- Payment Method -->
+      <h2 style="margin-top:20px;">Payment Method</h2>
+      <select id="paymentMethod" required>
+        <option value="">Select Payment Method</option>
+        <option>Cash on Delivery</option>
+        <option>UPI</option>
+        <option>Credit/Debit Card</option>
+      </select>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </div>
+
+  <script>
+    const inputs = document.querySelectorAll('#orderForm input[type="number"]');
+    const totalDisplay = document.querySelector('.total');
+
+    function updateTotal() {
+      let total = 0;
+      inputs.forEach(input => {
+        total += input.value * input.dataset.price;
+      });
+      totalDisplay.innerText = `Total: ₹${total}`;
+    }
+
+    inputs.forEach(input => input.addEventListener('input', updateTotal));
+
+    document.getElementById('reservationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const total = totalDisplay.innerText;
+      const payment = document.getElementById('paymentMethod').value;
+      alert(`Thank you, ${name}! Your booking is confirmed.\n${total}\nPayment Method: ${payment}`);
+      this.reset();
+      updateTotal();
+    });
+  </script>
+</body>
+</html>
